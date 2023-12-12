@@ -33,6 +33,8 @@ paths:
       security:
        - ApiTokenss: []
        - ApiKey: []
+      tags:
+        - Get User's
       summary: Returns a user details by ID.
       parameters:
         - name: userName
@@ -56,6 +58,8 @@ paths:
       security:
        - ApiTokenss: []
        - ApiKey: []
+      tags:
+        - Get User's
       summary: Returns all user's that exists in our system.
       responses: 
         '200':

@@ -18,6 +18,9 @@
     "fs": "^0.0.1-security",
     "mongoose": "^8.0.2",
     "path": "^0.12.7",
-    "puppeteer": "^21.6.0"
+    "puppeteer": "^21.6.0",
+    "swagger": "^0.7.5",
+    "swagger-ui-express": "^5.0.0",
+    "yamljs": "^0.3.0"
   }
 }

@@ -1,0 +1,117 @@
+openapi: 3.0.0
+info:
+  title: Get all user's property from database
+  description: Created a NodeJS project and implemented swagger here.
+  version: 1.0 
+  
+
+servers:
+  - url: http://localhost:3000/
+    description:  Local server 
+  - url: https://prod.com/
+    description:  Pre Production server
+  - url: https://test.com/
+    description:  Production server
+  
+
+ 
+components:
+  securitySchemes:
+    ApiTokenss:        # arbitrary name for the security scheme
+          
+      type: http
+      scheme: bearer
+    
+    ApiKey:        # arbitrary name for the security scheme
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: apikey
+      
+paths:
+  /users/{userName}:
+    get:
+      security:
+       - ApiTokenss: []
+       - ApiKey: []
+      summary: Returns a user details by ID.
+      parameters:
+        - name: userName
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            # type : integer
+            # format: int64
+            type: string
+            example: "Users String"
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+
+
+  paths:
+  /users:
+    get:
+      security:
+       - ApiTokenss: []
+       - ApiKey: []
+      summary: Returns all user's that exists in our system.
+      responses: 
+        '200':
+          description: OK
+  
+
+  paths:
+  /user:
+    post:
+      tags:
+        - Create a User
+      summary: Creating a single user. 
+      description: <b> Request :- </b> <br /> <br />
+              <b> name* </b>  is required <br /> 
+              <b> phone* </b>  is required <br /> 
+              <b> email* </b>  is required <br /> 
+              <b> address* </b>  is required <br /> 
+              <b> age* </b>  is required <br />
+
+      parameters:
+        - in: query
+          name: month_year
+          schema:
+            #type: integer
+            example: 2022-10        
+      post:
+      requestBody:
+        required: true
+        content:
+          #multipart/form-data:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                name:         
+                  type: string
+                  example: "Saumya"  
+                phone:       
+                  type: number
+                  example: 5621144875 
+                email:
+                  type: string
+                  example: "saumya@gmail.com"
+                address:
+                  type: string 
+                  example: "Chhapra"
+                age:
+                  type: number 
+                  example: 25
+         
+      responses:
+        '200':
+          description: A user object. 
+        '400':
+          description: The specified user ID is invalid (not a number).
+        '404':
+          description: A user with the specified ID was not found.
+        default:
+          description: Unexpected error

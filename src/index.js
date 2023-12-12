@@ -5,6 +5,8 @@ const Users = require('./users');
 const rateLimit = require('express-rate-limit');
 const common_helper = require('./common_helper');
 
+const { swaggerServe, swaggerSetup } = require('../config')
+
 mongoose.connect('mongodb://127.0.0.1:27017/test', {
 }).then(() => {
     console.log('Connected to database.');
@@ -26,6 +28,20 @@ const limiter = rateLimit({
 });
 app.use('/exportexcel', limiter);
 
+// ================================ Create User ===============================
+app.post('/user', async (req, res) => {
+    try {
+        const userData = req.body;
+        console.log('%%%%%%%%%%%%%%%%%', req.body)
+        const register = new Users(userData);
+        await register.save();
+        res.status(201).send('user created successfully');
+    }
+    catch (err) {
+        res.send('user not created, try again.' + err);
+    }
+});
+
 // ================================ Get data of all Users ===============================
 app.get('/users', async (req, res) => {
     try {
@@ -37,23 +53,28 @@ app.get('/users', async (req, res) => {
     }
 });
 
-// ================================ Create User ===============================
-app.post('/user', async (req, res) => {
-    try {
 
-        const register = new Users({
-            name: 'Deepak',
-            email: 'deepak@gmail.com',
-            phone: 9839879000,
-            address: 'New Delhi',
-            age: 25,
-            date: Date.now()
-        });
-        const result = await register.save();
-        res.status(201).send('user created successfully');
+// ================================ Get single user data ===============================
+app.get('/users/:name', async (req, res) => {
+    try {
+        const userName = req.params.name;
+        const result = await Users.find({name: userName});
+        res.send(result);
     }
     catch (err) {
-        res.send('user not created, try again.' + err);
+        res.send('Records not found, try again.' + err);
+    }
+});
+
+
+// ================================ Get data of all Users with all find property ===============================
+app.get('/users-with-find-props', async (req, res) => {
+    try {
+        const result = await Users.find({age: {$gt: 30}}, { name: 1, email: 1, phone: 1, _id: 0 }).sort({age: -1}).limit(5);
+        res.send(result);
+    }
+    catch (err) {
+        res.send('Records not found, try again.' + err);
     }
 });
 
@@ -259,6 +280,8 @@ app.get('/exportpdf', async (req, res) => {
         res.send('Error exporting PDF file: ' + err);
     }
 });
+
+app.use("/api-docs", swaggerServe, swaggerSetup);
 
 app.listen(port, () => {
     console.log('connected to server and running on PORT: ' + port);

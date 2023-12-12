@@ -86,7 +86,8 @@ paths:
         required: true
         content:
           #multipart/form-data:
-          application/json:
+          #application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               properties: 
@@ -108,9 +109,7 @@ paths:
          
       responses:
         '200':
-          description: A user object. 
-        '400':
-          description: The specified user ID is invalid (not a number).
+          description: A success message.
         '404':
           description: A user with the specified ID was not found.
         default:

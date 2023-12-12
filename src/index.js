@@ -5,6 +5,9 @@ const Users = require('./users');
 const rateLimit = require('express-rate-limit');
 const common_helper = require('./common_helper');
 
+// Middleware to parse application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
 const { swaggerServe, swaggerSetup } = require('../config')
 
 mongoose.connect('mongodb://127.0.0.1:27017/test', {
@@ -32,7 +35,6 @@ app.use('/exportexcel', limiter);
 app.post('/user', async (req, res) => {
     try {
         const userData = req.body;
-        console.log('%%%%%%%%%%%%%%%%%', req.body)
         const register = new Users(userData);
         await register.save();
         res.status(201).send('user created successfully');

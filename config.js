@@ -5,7 +5,7 @@ const swaggerJSDocs = YAML.load("api.yaml");
 const options = {
     customCss: `img {content:url(\'../logo.svg\'); height:auto;} `,
     customfavIcon: "../favicon.ico",
-    customSiteTitle: "Code Improve API Doc",
+    customSiteTitle: "Get all user's property from database",
 
 };
 
